@@ -8,7 +8,7 @@ const PORT = Process.env.PORT || 3000;
 const app = express();
 
 app.use(cors());
-app.get('/',(res,req) =>{
+app.get('/',(req,res) =>{
     res.send(`WORK`);
 })
 
