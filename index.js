@@ -2,7 +2,9 @@ import express from 'express';
 import fs from 'fs';
 import cors from 'cors';
 import {addCoin, addTask, addUser, checkUser, getCoinsAndTasks} from "./fileSystemWork.js";
+import * as Process from "process";
 
+const PORT = Process.env.PORT || 3000;
 const app = express();
 
 app.use(cors());
@@ -29,6 +31,6 @@ app.get("/addCoins", (req, res) => {
     res.send();
 })
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
     console.log("Запустились!")
 })
