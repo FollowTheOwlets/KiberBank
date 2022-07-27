@@ -8,6 +8,9 @@ const PORT = Process.env.PORT || 3000;
 const app = express();
 
 app.use(cors());
+app.get('/',(res,req) =>{
+    res.send(`WORK`);
+})
 
 app.get("/getUser561204567rtyw7", (req, res) => {
     res.send(JSON.stringify(getCoinsAndTasks(req.query.id)));
