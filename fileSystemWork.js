@@ -17,6 +17,7 @@ const getCoinsAndTasks = (id) => {
     return users[id];
 };
 const checkUser = (login, password) => {
+    console.log(password);
     const users = readFile(USER_LIST);
     // Проверка и регистрация
     if (users[login] === null) {
