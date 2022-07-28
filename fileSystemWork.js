@@ -54,7 +54,7 @@ const addUser = (name, login, password, group) => {
     return {state: true};
 };
 const addTask = (date, text, group) => {
-    const task = {date, text, state: 1}
+    const task = {date, text, state: 0}
 
     // получение списка группы
     const groups = readFile(GROUPS);

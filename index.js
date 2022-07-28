@@ -30,7 +30,7 @@ app.get("/addTask", (req, res) => {
 })
 
 app.get("/addCoins", (req, res) => {
-    addCoin(req.query.count, req.query.id);
+    addCoin(req.query.coins, req.query.id);
     res.send();
 })
 
