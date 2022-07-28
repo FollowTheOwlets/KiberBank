@@ -20,7 +20,7 @@ const checkUser = (login, password) => {
     console.log(password);
     const users = readFile(USER_LIST);
     // Проверка и регистрация
-    if (users[login] === null) {
+    if (users[login] === undefined) {
         return {state: false};
     }
     if (users[login].password !== password) {
