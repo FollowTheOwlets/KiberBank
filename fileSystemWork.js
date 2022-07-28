@@ -26,7 +26,7 @@ const checkUser = (login, password) => {
         return {state: false};
     }
 
-    return {state: true, id: users[login].id};
+    return {state: true, id: users[login].id, name: users[login].name};
 }
 
 const addUser = (name, login, password, group) => {
@@ -73,4 +73,4 @@ const addCoin = (coins, id) => {
     writeFile(USER_INFO, users);
 };
 
-export {getCoinsAndTasks, addUser, addTask, addCoin,checkUser};
+export {getCoinsAndTasks, addUser, addTask, addCoin, checkUser};
