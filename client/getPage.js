@@ -264,6 +264,7 @@ const getPage = () => {
         page += block;
 
         for (let child of groups[group]) {
+            if (usersInfo[child] === undefined) continue;
             const child_block = `
                    <div class="card my-card" id ="${child}">
                         <div class="card-header">
