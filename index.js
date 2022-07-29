@@ -1,5 +1,4 @@
 import express from 'express';
-import fs from 'fs';
 import cors from 'cors';
 import {addCoin, addTask, addUser, checkUser, completeTask, getCoinsAndTasks, addGroup} from "./fileSystemWork.js";
 import * as Process from "process";
