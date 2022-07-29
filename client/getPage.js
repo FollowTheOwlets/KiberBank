@@ -152,7 +152,7 @@ const getPage = () => {
                 };
             </script>
             <body>
-            <p style="padding:20px;display: flex;"><a  style="width: 20vw; font-size: 20px; margin-right: 20px;" class="btn btn-success" id="new_group_btn">Добовить группу:</a> <input style="width: 60vw;" type="text" id="new_group" class="form-control"  ></p>
+            <p style="padding:20px;display: flex;"><a  style="width: 20vw; font-size: 20px; margin-right: 20px;" class="btn btn-success" id="new_group_btn">Добавить группу:</a> <input style="width: 60vw;" type="text" id="new_group" class="form-control"  ></p>
             <script>
                 document.getElementById("new_group_btn").addEventListener("click", ()=>{
                     requestAddGroup(document.getElementById("new_group").value);
@@ -162,8 +162,8 @@ const getPage = () => {
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Добавление новой задачи</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">Добавление нового задания</h5>
+                    <button type="button" id="close_modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
                   <span style="padding: 0 5px;">Группа: </span><strong id="group" style="padding: 0 5px;"></strong>
@@ -185,6 +185,8 @@ const getPage = () => {
                        
                             const task = document.getElementById("task").value;
                             requestAddTask(date,task,group);
+                            document.getElementById("close_modal").click();
+                            document.getElementById("task").value = "";
                         });
                         
                     </script>
