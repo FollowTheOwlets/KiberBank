@@ -1,7 +1,7 @@
 import express from 'express';
 import fs from 'fs';
 import cors from 'cors';
-import {addCoin, addTask, addUser, checkUser, completeTask, getCoinsAndTasks} from "./fileSystemWork.js";
+import {addCoin, addTask, addUser, checkUser, completeTask, getCoinsAndTasks, addGroup} from "./fileSystemWork.js";
 import * as Process from "process";
 import {getPage} from "./client/getPage.js";
 
@@ -27,6 +27,10 @@ app.get("/getUser561204567rtyw7", (req, res) => {
 
 app.get("/reg", (req, res) => {
     res.send(JSON.stringify(addUser(req.query.name, req.query.login, req.query.password, req.query.group)));
+})
+
+app.get("/addGroup", (req, res) => {
+    res.send(JSON.stringify(addGroup(req.query.group)));
 })
 
 app.get("/auto", (req, res) => {

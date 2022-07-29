@@ -1,5 +1,7 @@
 import {GROUPS, readFile, USER_INFO, USER_LIST} from "../fileSystemWork.js";
-const DOMAIN = "https://kiber-bank-server.herokuapp.com";
+
+const DOMAIN = "http://localhost:3000";
+//const DOMAIN = "https://kiber-bank-server.herokuapp.com";
 const getPage = () => {
     let page = ``;
     const header = `
@@ -128,8 +130,34 @@ const getPage = () => {
                     };
                     xhr.send();
                 };
+                const requestAddGroup = (group) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.responseType = "json";
+
+                    xhr.open("GET", \`${DOMAIN}/addGroup?group=\$\{group\}\`);
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                    xhr.onload = () => {
+                        if (xhr.status !== 200) {
+                            return;
+                        }
+                        const response = xhr.response;
+                        alert(response.state ? "Группа добавлена" : "Такая группа уже существует");
+                    };
+
+                    xhr.onerror = () => {
+                        alert(\`Ошибка соединения\`);
+                    };
+                    xhr.send();
+                };
             </script>
             <body>
+            <p style="padding:20px;display: flex;"><a  style="width: 20vw; font-size: 20px; margin-right: 20px;" class="btn btn-success" id="new_group_btn">Добовить группу:</a> <input style="width: 60vw;" type="text" id="new_group" class="form-control"  ></p>
+            <script>
+                document.getElementById("new_group_btn").addEventListener("click", ()=>{
+                    requestAddGroup(document.getElementById("new_group").value);
+                });
+            </script>
             <div class="modal" tabindex="-1" id="ModalTask">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -141,7 +169,7 @@ const getPage = () => {
                   <span style="padding: 0 5px;">Группа: </span><strong id="group" style="padding: 0 5px;"></strong>
                     <div class="mb-3">
                       <label for="date" class="form-label">Дата получения задания</label>
-                      <input type="text" class="form-control" id="date">
+                      <input type="date" class="form-control" id="date">
                     </div>
                     <div class="mb-3">
                       <label for="task" class="form-label">Задание</label>
@@ -154,6 +182,7 @@ const getPage = () => {
                         document.getElementById("modal_button").addEventListener("click",()=>{
                             const group = document.getElementById("group").textContent;
                             const date = document.getElementById("date").value;
+                       
                             const task = document.getElementById("task").value;
                             requestAddTask(date,task,group);
                         });
@@ -225,7 +254,7 @@ const getPage = () => {
                                             })
                                         </script>
                                     ` : ``
-                                    }
+            }
                             </div>
                             <script>
                                 document.getElementById("${child}_button").addEventListener("click",()=>{

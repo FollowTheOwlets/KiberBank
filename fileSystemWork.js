@@ -36,7 +36,7 @@ const addUser = (name, login, password, group) => {
     const users = readFile(USER_LIST);
     // Проверка и регистрация
     if (users[login] !== undefined) {
-        return {state: false};
+        return {state: false, message: "Такой пользователь уже существует"};
     }
     users[login] = user;
     writeFile(USER_LIST, users);
@@ -48,11 +48,25 @@ const addUser = (name, login, password, group) => {
 
     // Запись в группу
     const groups = readFile(GROUPS);
+    if (groups[group] === undefined) {
+        return {state: false, message: "Такой группы не существует"};
+    }
     groups[group] = groups[group] !== undefined ? [...groups[group], id] : [id];
     writeFile(GROUPS, groups);
 
     return {state: true};
 };
+
+const addGroup = (group) => {
+    const groups = readFile(GROUPS);
+    if (groups[group] !== undefined) {
+        return {state: false};
+    }
+    groups[group] = [];
+    writeFile(GROUPS, groups);
+    return {state: true}
+};
+
 const addTask = (date, text, group) => {
     const task = {date, text, state: 0}
 
@@ -93,5 +107,6 @@ export {
     addUser,
     addTask,
     addCoin,
-    checkUser
+    checkUser,
+    addGroup
 };
