@@ -166,7 +166,6 @@ const getPage = () => {
                         if (xhr.status !== 200) {
                             return;
                         }
-                        const response = xhr.response;
                         alert("Удаление студента прошло успешно");
                     };
 
@@ -271,8 +270,8 @@ const getPage = () => {
                             Имя: <strong style="padding: 0 5px;">${users[usersInfo[child].login].name}</strong>
                             Логин: ${usersInfo[child].login}
                             ID: ${child}
-                            <a style="padding: 0 30px;" class="btn btn-danger" id="delete_${child}">Удалить</a>
-                            <script>document.getElementById("delete_${child}").addEventListener("click",()=> requestDeleteStudent("delete_${child}"))</script>
+                            <a style="margin: 0 30px;" class="btn btn-danger" id="delete_${child}">Удалить</a>
+                            <script>document.getElementById("delete_${child}").addEventListener("click",()=> requestDeleteStudent("${child}"))</script>
                         </div>
                         <div class="card-body my-card-body">
                             <strong class="card-text" id="${child}_p">${usersInfo[child].coins} K</strong>
