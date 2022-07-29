@@ -87,8 +87,11 @@ const completeTask = (id, state) => {
     const users = readFile(USER_INFO);
     const oldState = users[id].tasks[0].state;
     users[id].tasks[0].state = state;
+
     if (+oldState === 1 && +state === 0)
         users[id].coins = Number(users[id].coins) - Number(users[id].tasks[0].weight);
+    else if (+oldState === 0 && +state === -1)
+        users[id].coins = Number(users[id].coins);
     else
         users[id].coins = Number(users[id].coins) + Number(users[id].tasks[0].weight) * Number(state);
     writeFile(USER_INFO, users);

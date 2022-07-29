@@ -283,10 +283,12 @@ const getPage = () => {
                                                 neitList.add("btn-outline-secondary");
                                             });
                                             document.getElementById("${child}_button_HW_false").addEventListener("click",()=>{
-                                                if(!falseList.contains("btn-secondary")){
+                                                if(trueList.contains("btn-secondary")){
                                                     const p = document.getElementById("${child}_p");
                                                     const coins = parseInt(p.textContent);
                                                     p.textContent = "" + (coins - Number(${usersInfo[child].tasks[0].weight})) + " K";
+                                                    requestCompleteTask("${child}",-1);
+                                                }else if (neitList.contains("btn-secondary")){
                                                     requestCompleteTask("${child}",-1);
                                                 }
                                                 
