@@ -257,32 +257,58 @@ const getPage = () => {
                 ? ` <span style="padding-left: 25px; font-size: 12px;">Последнее ДЗ (${usersInfo[child].tasks[0].text}) :</span>
                                     <a class="btn btn-success" id="${child}_button_HW_true">Выполнено</a>
                                     <a class="btn btn-danger" id="${child}_button_HW_false">Не выполнено</a>
+                                    <a class="btn btn-secondary" id="${child}_button_HW_neitral">Вернуть на доработку</a>
                                         <script>
+                                            const trueList = document.getElementById("${child}_button_HW_true").classList;
+                                            const falseList = document.getElementById("${child}_button_HW_false").classList;
+                                            const neitList = document.getElementById("${child}_button_HW_neitral").classList;
+               
                                             document.getElementById("${child}_button_HW_true").addEventListener("click",()=>{
-                                                if(!document.getElementById("${child}_button_HW_true").classList.contains("btn-secondary")){
+                                                if(!trueList.contains("btn-secondary")){
                                                     const p = document.getElementById("${child}_p");
                                                     const coins = parseInt(p.textContent);
                                                     p.textContent = "" + (coins + Number(${usersInfo[child].tasks[0].weight})) + " K";
                                                     requestCompleteTask("${child}",1);
                                                 }
-                                                document.getElementById("${child}_button_HW_true").classList.add("btn-secondary");
-                                                document.getElementById("${child}_button_HW_false").classList.remove("btn-secondary");
-                                                document.getElementById("${child}_button_HW_true").classList.remove("btn-success");
-                                                document.getElementById("${child}_button_HW_false").classList.add("btn-danger");
-                                            })
+                                                falseList.remove("btn-secondary");
+                                                falseList.add("btn-danger");
+                                                trueList.add("btn-secondary");
+                                                trueList.remove("btn-success");
+                                                neitList.remove("btn-secondary");
+                                                neitList.add("btn-outline-secondary");
+                                            });
                                             document.getElementById("${child}_button_HW_false").addEventListener("click",()=>{
-                                                if(document.getElementById("${child}_button_HW_true").classList.contains("btn-secondary")){
+                                                if(!falseList.contains("btn-secondary")){
                                                     const p = document.getElementById("${child}_p");
                                                     const coins = parseInt(p.textContent);
                                                     p.textContent = "" + (coins - Number(${usersInfo[child].tasks[0].weight})) + " K";
                                                     requestCompleteTask("${child}",-1);
                                                 }
                                                 
-                                                document.getElementById("${child}_button_HW_false").classList.add("btn-secondary");
-                                                document.getElementById("${child}_button_HW_false").classList.remove("btn-danger");
-                                                document.getElementById("${child}_button_HW_true").classList.add("btn-success");
-                                                document.getElementById("${child}_button_HW_true").classList.remove("btn-secondary");
-                                            })
+                                                falseList.add("btn-secondary");
+                                                falseList.remove("btn-danger");
+                                                trueList.remove("btn-secondary");
+                                                trueList.add("btn-success");
+                                                neitList.remove("btn-secondary");
+                                                neitList.add("btn-outline-secondary");
+                                            });
+                                            document.getElementById("${child}_button_HW_neitral").addEventListener("click",()=>{
+                                                if(!neitList.contains("btn-outline-secondary")){
+                                                    if(trueList.contains("btn-secondary")){
+                                                        const p = document.getElementById("${child}_p");
+                                                        const coins = parseInt(p.textContent);
+                                                        p.textContent = "" + (coins - Number(${usersInfo[child].tasks[0].weight})) + " K";
+                                                    }
+                                                    requestCompleteTask("${child}",0);
+                                                }
+                                                
+                                                falseList.remove("btn-secondary");
+                                                falseList.add("btn-danger");
+                                                trueList.remove("btn-secondary");
+                                                trueList.add("btn-success");
+                                                neitList.add("btn-secondary");
+                                                neitList.remove("btn-outline-secondary");
+                                            });
                                         </script>
                                     ` : ``
             }
