@@ -77,9 +77,14 @@ const addTask = (date, text, group, weight) => {
     // Добавление задачи через общий список
     const users = readFile(USER_INFO);
     for (let id of children) {
-        users[id].tasks = [task, ...users[id].tasks];
+        if (users[id] !== undefined) {
+            users[id].tasks = [task, ...users[id].tasks];
+        } else {
+            groups[group] = groups[group].filter(e => e !== id);
+        }
     }
     writeFile(USER_INFO, users);
+    writeFile(GROUPS, groups);
 };
 
 const completeTask = (id, state) => {
@@ -104,6 +109,18 @@ const addCoin = (coins, id) => {
     writeFile(USER_INFO, users);
 };
 
+const deleteStudent = (id) => {
+    const usersList = readFile(USER_LIST);
+    const usersInfo = readFile(USER_INFO);
+
+    delete usersList[usersInfo[id].login];
+    delete usersInfo[id];
+
+    writeFile(USER_LIST, usersList);
+    writeFile(USER_INFO, usersInfo);
+
+}
+
 export {
     USER_INFO,
     USER_LIST,
@@ -116,5 +133,6 @@ export {
     addTask,
     addCoin,
     checkUser,
-    addGroup
+    addGroup,
+    deleteStudent
 };

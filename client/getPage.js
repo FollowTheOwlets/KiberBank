@@ -56,7 +56,7 @@ const getPage = () => {
                 margin-left: 3px;
                 font-size: 12px;
             }
-            .btn-outline-secondary {
+            .my-card-body .btn-outline-secondary {
                 padding: 2px;
                 margin-left: 3px;
                 font-size: 12px;
@@ -148,6 +148,26 @@ const getPage = () => {
                         }
                         const response = xhr.response;
                         alert(response.state ? "Группа добавлена" : "Такая группа уже существует");
+                    };
+
+                    xhr.onerror = () => {
+                        alert(\`Ошибка соединения\`);
+                    };
+                    xhr.send();
+                };
+                const requestDeleteStudent = (id) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.responseType = "json";
+
+                    xhr.open("GET", \`${DOMAIN}/deleteStudent?id=\$\{id\}\`);
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                    xhr.onload = () => {
+                        if (xhr.status !== 200) {
+                            return;
+                        }
+                        const response = xhr.response;
+                        alert("Удаление студента прошло успешно");
                     };
 
                     xhr.onerror = () => {
@@ -251,8 +271,10 @@ const getPage = () => {
                             Имя: <strong style="padding: 0 5px;">${users[usersInfo[child].login].name}</strong>
                             Логин: ${usersInfo[child].login}
                             ID: ${child}
+                            <a style="padding: 0 30px;" class="btn btn-danger" id="delete_${child}">Удалить</a>
+                            <script>document.getElementById("delete_${child}").addEventListener("click",()=> requestDeleteStudent("delete_${child}"))</script>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body my-card-body">
                             <strong class="card-text" id="${child}_p">${usersInfo[child].coins} K</strong>
                             <div class="mb-3 my-mb-3">
                                 <strong style="padding: 0 5px;">K</strong>

@@ -1,6 +1,15 @@
 import express from 'express';
 import cors from 'cors';
-import {addCoin, addTask, addUser, checkUser, completeTask, getCoinsAndTasks, addGroup} from "./fileSystemWork.js";
+import {
+    addCoin,
+    addTask,
+    addUser,
+    checkUser,
+    completeTask,
+    getCoinsAndTasks,
+    addGroup,
+    deleteStudent
+} from "./fileSystemWork.js";
 import * as Process from "process";
 import {getPage} from "./client/getPage.js";
 
@@ -43,6 +52,11 @@ app.get("/addTask", (req, res) => {
 
 app.get("/completeTask", (req, res) => {
     completeTask(req.query.id, req.query.state);
+    res.send();
+})
+
+app.get("/deleteStudent", (req, res) => {
+    deleteStudent(req.query.id);
     res.send();
 })
 
