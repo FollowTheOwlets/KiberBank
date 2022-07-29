@@ -1,15 +1,24 @@
 import express from 'express';
 import fs from 'fs';
 import cors from 'cors';
-import {addCoin, addTask, addUser, checkUser, getCoinsAndTasks} from "./fileSystemWork.js";
+import {addCoin, addTask, addUser, checkUser, completeTask, getCoinsAndTasks} from "./fileSystemWork.js";
 import * as Process from "process";
+import {getPage} from "./client/getPage.js";
 
 const PORT = Process.env.PORT || 3000;
 const app = express();
 
 app.use(cors());
-app.get('/',(req,res) =>{
+app.get('/', (req, res) => {
     res.send(`WORK`);
+})
+
+app.get('/edit', (req, res) => {
+    if (req.query.token !== "token1928vtnhjgjkbnty") {
+        res.send(`Неверный токен`);
+    } else {
+        res.send(getPage());
+    }
 })
 
 app.get("/getUser561204567rtyw7", (req, res) => {
@@ -29,7 +38,15 @@ app.get("/addTask", (req, res) => {
     res.send();
 })
 
+app.get("/completeTask", (req, res) => {
+    completeTask(req.query.id, req.query.state);
+    res.send();
+})
+
 app.get("/addCoins", (req, res) => {
+    if (isNaN(parseInt(req.query.coins))) {
+        return;
+    }
     addCoin(req.query.coins, req.query.id);
     res.send();
 })

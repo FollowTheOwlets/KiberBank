@@ -17,7 +17,7 @@ const getCoinsAndTasks = (id) => {
     return users[id];
 };
 const checkUser = (login, password) => {
-    console.log(password);
+
     const users = readFile(USER_LIST);
     // Проверка и регистрация
     if (users[login] === undefined) {
@@ -43,7 +43,7 @@ const addUser = (name, login, password, group) => {
 
     //Добавление в общий список
     const usersInfo = readFile(USER_INFO);
-    usersInfo[id] = {coins: 10, tasks: []};
+    usersInfo[id] = {login, coins: 10, tasks: []};
     writeFile(USER_INFO, usersInfo);
 
     // Запись в группу
@@ -67,6 +67,14 @@ const addTask = (date, text, group) => {
     }
     writeFile(USER_INFO, users);
 };
+
+const completeTask = (id, state) => {
+    // Добавление задачи через общий список
+    const users = readFile(USER_INFO);
+    users[id].tasks[0].state = state;
+    writeFile(USER_INFO, users);
+};
+
 const addCoin = (coins, id) => {
     // Добавление киберонов через общий список
     const users = readFile(USER_INFO);
@@ -74,4 +82,16 @@ const addCoin = (coins, id) => {
     writeFile(USER_INFO, users);
 };
 
-export {getCoinsAndTasks, addUser, addTask, addCoin, checkUser};
+export {
+    USER_INFO,
+    USER_LIST,
+    GROUPS,
+    writeFile,
+    readFile,
+    getCoinsAndTasks,
+    completeTask,
+    addUser,
+    addTask,
+    addCoin,
+    checkUser
+};
