@@ -263,8 +263,8 @@ const getPage = () => {
                                                     const p = document.getElementById("${child}_p");
                                                     const coins = parseInt(p.textContent);
                                                     p.textContent = "" + (coins + Number(${usersInfo[child].tasks[0].weight})) + " K";
+                                                    requestCompleteTask("${child}",1);
                                                 }
-                                                requestCompleteTask("${child}",1);
                                                 document.getElementById("${child}_button_HW_true").classList.add("btn-secondary");
                                                 document.getElementById("${child}_button_HW_false").classList.remove("btn-secondary");
                                                 document.getElementById("${child}_button_HW_true").classList.remove("btn-success");
@@ -275,8 +275,9 @@ const getPage = () => {
                                                     const p = document.getElementById("${child}_p");
                                                     const coins = parseInt(p.textContent);
                                                     p.textContent = "" + (coins - Number(${usersInfo[child].tasks[0].weight})) + " K";
+                                                    requestCompleteTask("${child}",-1);
                                                 }
-                                                requestCompleteTask("${child}",-1);
+                                                
                                                 document.getElementById("${child}_button_HW_false").classList.add("btn-secondary");
                                                 document.getElementById("${child}_button_HW_false").classList.remove("btn-danger");
                                                 document.getElementById("${child}_button_HW_true").classList.add("btn-success");

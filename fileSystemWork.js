@@ -86,7 +86,7 @@ const completeTask = (id, state) => {
     // Добавление задачи через общий список
     const users = readFile(USER_INFO);
     users[id].tasks[0].state = state;
-    users[id].coins = Number(users[id].coins) + Number(users[id].tasks[0].weight);
+    users[id].coins = Number(users[id].coins) + Number(users[id].tasks[0].weight) * Number(state);
     writeFile(USER_INFO, users);
 };
 
