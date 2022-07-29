@@ -1,5 +1,5 @@
 import {GROUPS, readFile, USER_INFO, USER_LIST} from "../fileSystemWork.js";
-
+const DOMAIN = "https://kiber-bank-server.herokuapp.com";
 const getPage = () => {
     let page = ``;
     const header = `
@@ -75,7 +75,7 @@ const getPage = () => {
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = "json";
 
-                    xhr.open("GET", \`https://calm-sands-73302.herokuapp.com/addCoins?coins=\$\{coins\}&id=\$\{id\}\`);
+                    xhr.open("GET", \`${DOMAIN}/addCoins?coins=\$\{coins\}&id=\$\{id\}\`);
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                     xhr.onload = () => {
@@ -94,7 +94,7 @@ const getPage = () => {
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = "json";
 
-                    xhr.open("GET", \`https://calm-sands-73302.herokuapp.com/addTask?date=\$\{date\}&text=\$\{text\}&group=\$\{group\}\`);
+                    xhr.open("GET", \`${DOMAIN}/addTask?date=\$\{date\}&text=\$\{text\}&group=\$\{group\}\`);
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                     xhr.onload = () => {
@@ -113,7 +113,7 @@ const getPage = () => {
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = "json";
 
-                    xhr.open("GET", \`https://calm-sands-73302.herokuapp.com/completeTask?id=\$\{id\}&state=\$\{state\}\`);
+                    xhr.open("GET", \`${DOMAIN}/completeTask?id=\$\{id\}&state=\$\{state\}\`);
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                     xhr.onload = () => {
