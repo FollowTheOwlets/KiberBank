@@ -254,11 +254,16 @@ const getPage = () => {
                                 <input type="number" class="form-control my-form-control" id="${child}_addKiberon">
                                 <a class="btn btn-info" id="${child}_button">Добавить</a>
                                 ${usersInfo[child].tasks.length !== 0 && usersInfo[child].tasks[0].state === 0
-                ? ` <span style="padding-left: 25px; font-size: 12px;">Последнее ДЗ:</span>
+                ? ` <span style="padding-left: 25px; font-size: 12px;">Последнее ДЗ (${usersInfo[child].tasks[0].text}) :</span>
                                     <a class="btn btn-success" id="${child}_button_HW_true">Выполнено</a>
                                     <a class="btn btn-danger" id="${child}_button_HW_false">Не выполнено</a>
                                         <script>
                                             document.getElementById("${child}_button_HW_true").addEventListener("click",()=>{
+                                                if(!document.getElementById("${child}_button_HW_true").classList.contains("btn-secondary")){
+                                                    const p = document.getElementById("${child}_p");
+                                                    const coins = parseInt(p.textContent);
+                                                    p.textContent = "" + (coins + Number(${usersInfo[child].tasks[0].weight})) + " K";
+                                                }
                                                 requestCompleteTask("${child}",1);
                                                 document.getElementById("${child}_button_HW_true").classList.add("btn-secondary");
                                                 document.getElementById("${child}_button_HW_false").classList.remove("btn-secondary");
@@ -266,6 +271,11 @@ const getPage = () => {
                                                 document.getElementById("${child}_button_HW_false").classList.add("btn-danger");
                                             })
                                             document.getElementById("${child}_button_HW_false").addEventListener("click",()=>{
+                                                if(document.getElementById("${child}_button_HW_true").classList.contains("btn-secondary")){
+                                                    const p = document.getElementById("${child}_p");
+                                                    const coins = parseInt(p.textContent);
+                                                    p.textContent = "" + (coins - Number(${usersInfo[child].tasks[0].weight})) + " K";
+                                                }
                                                 requestCompleteTask("${child}",-1);
                                                 document.getElementById("${child}_button_HW_false").classList.add("btn-secondary");
                                                 document.getElementById("${child}_button_HW_false").classList.remove("btn-danger");
@@ -279,8 +289,8 @@ const getPage = () => {
                             <script>
                                 document.getElementById("${child}_button").addEventListener("click",()=>{
                                     const input  = document.getElementById("${child}_addKiberon");
-                                    const p = document.getElementById("${child}_p");
                                     requestAddCoins(input.value,"${child}");
+                                    const p = document.getElementById("${child}_p");
                                     const coins = parseInt(p.textContent);
                                     p.textContent = "" + (coins + Number(input.value)) + " K";
                                 });
