@@ -67,8 +67,8 @@ const addGroup = (group) => {
     return {state: true}
 };
 
-const addTask = (date, text, group) => {
-    const task = {date, text, state: 0}
+const addTask = (date, text, group, weight) => {
+    const task = {date, text, weight, state: 0}
 
     // получение списка группы
     const groups = readFile(GROUPS);
@@ -86,6 +86,7 @@ const completeTask = (id, state) => {
     // Добавление задачи через общий список
     const users = readFile(USER_INFO);
     users[id].tasks[0].state = state;
+    users[id].coins = Number(users[id].coins) + Number(users[id].tasks[0].weight);
     writeFile(USER_INFO, users);
 };
 

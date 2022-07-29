@@ -1,7 +1,7 @@
 import {GROUPS, readFile, USER_INFO, USER_LIST} from "../fileSystemWork.js";
 
-//const DOMAIN = "http://localhost:3000";
-const DOMAIN = "https://kiber-bank-server.herokuapp.com";
+const DOMAIN = "http://localhost:3000";
+//const DOMAIN = "https://kiber-bank-server.herokuapp.com";
 const getPage = () => {
     let page = ``;
     const header = `
@@ -92,11 +92,11 @@ const getPage = () => {
                     };
                     xhr.send();
                 };
-                const requestAddTask = (date,text,group) => {
+                const requestAddTask = (date,text,group,weight) => {
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = "json";
 
-                    xhr.open("GET", \`${DOMAIN}/addTask?date=\$\{date\}&text=\$\{text\}&group=\$\{group\}\`);
+                    xhr.open("GET", \`${DOMAIN}/addTask?date=\$\{date\}&text=\$\{text\}&group=\$\{group\}&weight=\$\{weight\}\`);
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                     xhr.onload = () => {
@@ -175,6 +175,18 @@ const getPage = () => {
                       <label for="task" class="form-label">Задание</label>
                       <textarea class="form-control" id="task" rows="3"></textarea>
                     </div>
+                    <div class="form-check form-check-inline">
+                      <input class="btn-check" type="radio" name="options-outlined" id="k_5" value="5" autocomplete="off" checked>
+                      <label class="btn btn-outline-secondary" for="k_5">5 киберон</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="btn-check" type="radio" name="options-outlined" id="k_10" value="10" autocomplete="off">
+                      <label class="btn btn-outline-success" for="k_10">10 киберон</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="btn-check" type="radio" name="options-outlined" id="k_15" value="15" autocomplete="off">
+                      <label class="btn  btn-outline-danger" for="k_15">15 киберон</label>
+                    </div>
                   </div>
                   <div class="modal-footer">
                     <button type="button" id="modal_button" class="btn btn-primary">Добавить</button>
@@ -182,9 +194,15 @@ const getPage = () => {
                         document.getElementById("modal_button").addEventListener("click",()=>{
                             const group = document.getElementById("group").textContent;
                             const date = document.getElementById("date").value;
-                       
+                            let weight = 5;
+                            if(document.getElementById("k_10").checked){
+                                weight = 10;
+                            }
+                            if(document.getElementById("k_15").checked){
+                                weight = 15;
+                            }
                             const task = document.getElementById("task").value;
-                            requestAddTask(date,task,group);
+                            requestAddTask(date,task,group,weight);
                             document.getElementById("close_modal").click();
                             document.getElementById("task").value = "";
                         });

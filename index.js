@@ -37,7 +37,7 @@ app.get("/auto", (req, res) => {
 })
 
 app.get("/addTask", (req, res) => {
-    addTask(req.query.date, req.query.text, req.query.group);
+    addTask(req.query.date, req.query.text, req.query.group, req.query.weight);
     res.send();
 })
 
