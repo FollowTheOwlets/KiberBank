@@ -272,7 +272,13 @@ const getPage = () => {
                             Логин: ${usersInfo[child].login}
                             ID: ${child}
                             <a style="margin: 0 30px;" class="btn btn-danger" id="delete_${child}">Удалить</a>
-                            <script>document.getElementById("delete_${child}").addEventListener("click",()=> requestDeleteStudent("${child}");document.getElementById("${child}").remove();)</script>
+                            <script>
+                            document.getElementById("delete_${child}").addEventListener("click",()=> {
+                                requestDeleteStudent("${child}");
+                                document.getElementById("${child}").remove();
+                            });
+                            
+                            </script>
                         </div>
                         <div class="card-body my-card-body">
                             <strong class="card-text" id="${child}_p">${usersInfo[child].coins} K</strong>
