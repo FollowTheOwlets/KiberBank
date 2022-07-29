@@ -56,6 +56,11 @@ const getPage = () => {
                 margin-left: 3px;
                 font-size: 12px;
             }
+            .btn-outline-secondary {
+                padding: 2px;
+                margin-left: 3px;
+                font-size: 12px;
+            }
             .btn-danger {
                 color: #f9fafb;
                 padding: 2px;
@@ -293,7 +298,7 @@ const getPage = () => {
                                                 neitList.add("btn-outline-secondary");
                                             });
                                             document.getElementById("${child}_button_HW_neitral").addEventListener("click",()=>{
-                                                if(!neitList.contains("btn-outline-secondary")){
+                                                if(neitList.contains("btn-outline-secondary")){
                                                     if(trueList.contains("btn-secondary")){
                                                         const p = document.getElementById("${child}_p");
                                                         const coins = parseInt(p.textContent);
