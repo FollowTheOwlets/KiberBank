@@ -1,7 +1,7 @@
 import {GROUPS, readFile, USER_INFO, USER_LIST} from "../fileSystemWork.js";
 
-const DOMAIN = "http://localhost:3000";
-//const DOMAIN = "https://kiber-bank-server.herokuapp.com";
+//const DOMAIN = "http://localhost:3000";
+const DOMAIN = "https://kiber-bank-server.herokuapp.com";
 const getPage = () => {
     let page = ``;
     const header = `
