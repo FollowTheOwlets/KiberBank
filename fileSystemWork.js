@@ -31,9 +31,15 @@ const checkUser = (login, password) => {
 }
 
 const addUser = (name, login, password, group) => {
-    const id = uuidv4();
-    const user = {name, login, password, group, id};
+    const usersInfo = readFile(USER_INFO);
     const users = readFile(USER_LIST);
+    const groups = readFile(GROUPS);
+
+    let id = uuidv4();
+    while(usersInfo[id] !== undefined){
+        id = uuidv4();
+    }
+    const user = {name, login, password, group, id};
     // Проверка и регистрация
     if (users[login] !== undefined) {
         return {state: false, message: "Такой пользователь уже существует"};
@@ -42,12 +48,10 @@ const addUser = (name, login, password, group) => {
     writeFile(USER_LIST, users);
 
     //Добавление в общий список
-    const usersInfo = readFile(USER_INFO);
     usersInfo[id] = {login, coins: 10, tasks: []};
     writeFile(USER_INFO, usersInfo);
 
     // Запись в группу
-    const groups = readFile(GROUPS);
     if (groups[group] === undefined) {
         return {state: false, message: "Такой группы не существует"};
     }
