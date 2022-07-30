@@ -73,7 +73,7 @@ const getPage = () => {
                 justify-content: space-around;
             }
             .my-card{
-                width: 45vw;
+                min-width: 45vw;
                 margin-bottom: 20px;
             }
             </style>
