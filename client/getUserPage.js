@@ -274,7 +274,7 @@ const getUserPage = (id) => {
                         <span class="kiber_nice">КиберПриятности</span>
                     </div>
                     <div class="img_wrapper">
-                        <img id="kiber_img" src="${DOMAIN}/img/nice_orig.png">
+                        <img id="kiber_img" src="${DOMAIN}/nice_orig">
                     </div>
                 </div>
             </div>
