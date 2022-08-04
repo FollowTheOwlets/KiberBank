@@ -153,13 +153,12 @@ app.get("/addCoins", (req, res) => {
 })
 
 app.get('/nice_orig', (req, res) => {
-    res.sendFile(`${DOMAIN}/img/nice_orig.png`);
+    res.sendFile(`/img/nice_orig.png`);
 });
 
 app.get('/ico', (req, res) => {
-    console.log(path.join('img','favicon.ico'));
     res.setHeader('Content-Type', 'image/x-icon');
-    res.sendFile(`${DOMAIN}/img/favicon.ico`);
+    res.sendFile(`/img/favicon.ico`);
 });
 
 
