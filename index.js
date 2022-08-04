@@ -157,7 +157,7 @@ app.get('/nice_orig', (req, res) => {
 });
 
 app.get('/ico', (req, res) => {
-    console.log(path);
+    console.log(path.join('img','favicon.ico'));
     res.setHeader('Content-Type', 'image/x-icon');
     res.sendFile(`${DOMAIN}/img/favicon.ico`);
 });
