@@ -1,9 +1,11 @@
 import fs from "fs";
 import {v4 as uuidv4} from 'uuid';
+import bcrypt, {hashSync} from 'bcrypt';
 
 const USER_INFO = "DB/usersInfo.json";
 const USER_LIST = "DB/usersList.json";
 const GROUPS = "DB/groups.json";
+const salt = bcrypt.genSaltSync(10);
 
 const readFile = (name) => {
     return JSON.parse(fs.readFileSync(name, "utf-8"));
@@ -23,7 +25,7 @@ const checkUser = (login, password) => {
     if (users[login] === undefined) {
         return {state: false};
     }
-    if (users[login].password !== password) {
+    if (bcrypt.hashSync(users[login].password, salt) !== password) {
         return {state: false};
     }
 
@@ -36,10 +38,11 @@ const addUser = (name, login, password, group) => {
     const groups = readFile(GROUPS);
 
     let id = uuidv4();
-    while(usersInfo[id] !== undefined){
+    while (usersInfo[id] !== undefined) {
         id = uuidv4();
     }
-    const user = {name, login, password, group, id};
+    const cryptoPas = bcrypt.hashSync(password, salt);
+    const user = {name, login, password: cryptoPas, group, id};
     // Проверка и регистрация
     if (users[login] !== undefined) {
         return {state: false, message: "Такой пользователь уже существует"};

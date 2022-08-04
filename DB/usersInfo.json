@@ -1,31 +1,3 @@
 {
-  "b9cc3baa-b280-4241-a517-7c903f39255b": {
-	"login": "login",
-	"coins": 10,
-	"tasks": [
-	  {
-		"date": "2022-08-03",
-		"text": "234243",
-		"weight": "10",
-		"state": 0
-	  }
-	]
-  },
-  "f8bae0a5-ad36-4c7a-a98f-d2868f1bc6f8": {
-	"login": "login2",
-	"coins": 10,
-	"tasks": [
-	  {
-		"date": "2022-08-03",
-		"text": "234243",
-		"weight": "10",
-		"state": 0
-	  }
-	]
-  },
-  "8b64ee86-9b4a-4f41-8a20-ffae88b9350e": {
-	"login": "log1",
-	"coins": 10,
-	"tasks": []
-  }
+
 }

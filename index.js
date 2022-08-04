@@ -14,11 +14,12 @@ import {DOMAIN, getPage} from "./client/getPage.js";
 import {getUserPage} from "./client/getUserPage.js";
 import * as Process from "process";
 import {getLoginPage} from "./client/getLoginPage.js";
-import * as path from "path";
-import favicon  from 'serve-favicon';
+import Ddos  from 'ddos';
 
 const PORT = Process.env.PORT || 3000;
 const app = express();
+const ddos = new Ddos;
+app.use(ddos.express)
 
 const TOKENS = ["f8bae0a5-ad36-4c7a-a98f-d2868f1bc6f8", "b9cc3baa-b280-4241-a517-7c903f39255b"];
 
