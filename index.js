@@ -23,7 +23,6 @@ const app = express();
 const TOKENS = ["f8bae0a5-ad36-4c7a-a98f-d2868f1bc6f8", "b9cc3baa-b280-4241-a517-7c903f39255b"];
 
 app.use(cors());
-app.use(favicon(path.join('img','favicon.ico')));
 
 app.get('/', (req, res) => {
     if (req.query.id === undefined || req.query.id === null) {
