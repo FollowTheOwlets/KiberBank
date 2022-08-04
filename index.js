@@ -153,12 +153,12 @@ app.get("/addCoins", (req, res) => {
 })
 
 app.get('/nice_orig', (req, res) => {
-    res.sendFile(`/img/nice_orig.png`);
+    res.sendFile(`/app/img/nice_orig.png`);
 });
 
 app.get('/ico', (req, res) => {
     res.setHeader('Content-Type', 'image/x-icon');
-    res.sendFile(`/img/favicon.ico`);
+    res.sendFile(`/app/img/favicon.ico`);
 });
 
 
