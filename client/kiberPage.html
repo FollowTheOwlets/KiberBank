@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML >
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Форма</title>
 </head>
+<style>
+    body{font-family:sans-serif;font-size:20px}p{margin-bottom:.3rem}#div_form{position:fixed;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}#form{width:200px;display:flex;flex-direction:column;justify-content:center;align-items:center;border:.05rem solid dimgrey;background-color:#19cbea;padding:.4rem;border-radius:.7rem}.text_name{text-align:center;font-size:1rem;margin-top:.5rem;color:#fff;font-weight:700}.for_input{padding:10px;border-radius:10px;border:.05rem solid dimgrey;font-family:sans-serif}#button{background-color:#fff;color:#0fbbc2;padding:.6rem 1.2rem;border-radius:10px;border:.05rem solid dimgrey;font-weight:bolder;font-size:.8rem;cursor:pointer;margin-top:1rem}input:focus{border:.05rem solid gray}#button:hover{opacity:.9;border:.05rem solid #bababa}
+</style>
 <body>
-$END$
+<div id="div_form"><div id="form"><label for="name" class="text_name">Имя</label><input id ="name" class="for_input"><label for="login" class="text_name">Логин</label><input id ="login" class="for_input"><label  for="password" class="text_name">Пароль</label><input type="password" id ="password" class="for_input"><label for="repeatPassword" class="text_name">Повторите пароль</label><input type="password" id ="repeatPassword" class="for_input"><label for="group" class="text_name">Группа</label><input id ="group" class="for_input"><a id="button"> Зарегистрироваться</a></div></div>
 </body>
 </html>

@@ -78,11 +78,12 @@ const getPage = () => {
             }
             </style>
                 <script>
+                const token = localStorage.getItem("token") || "";
                 const requestAddCoins = (coins,id) => {
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = "json";
 
-                    xhr.open("GET", \`${DOMAIN}/addCoins?coins=\$\{coins\}&id=\$\{id\}\`);
+                    xhr.open("GET", \`${DOMAIN}/addCoins?coins=\$\{coins\}&id=\$\{id\}&token=\$\{token\}\`);
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                     xhr.onload = () => {
@@ -101,7 +102,7 @@ const getPage = () => {
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = "json";
 
-                    xhr.open("GET", \`${DOMAIN}/addTask?date=\$\{date\}&text=\$\{text\}&group=\$\{group\}&weight=\$\{weight\}\`);
+                    xhr.open("GET", \`${DOMAIN}/addTask?date=\$\{date\}&text=\$\{text\}&group=\$\{group\}&weight=\$\{weight\}&token=\$\{token\}\`);
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                     xhr.onload = () => {
@@ -120,7 +121,7 @@ const getPage = () => {
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = "json";
 
-                    xhr.open("GET", \`${DOMAIN}/completeTask?id=\$\{id\}&state=\$\{state\}\`);
+                    xhr.open("GET", \`${DOMAIN}/completeTask?id=\$\{id\}&state=\$\{state\}&token=\$\{token\}\`);
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                     xhr.onload = () => {
@@ -139,7 +140,7 @@ const getPage = () => {
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = "json";
 
-                    xhr.open("GET", \`${DOMAIN}/addGroup?group=\$\{group\}\`);
+                    xhr.open("GET", \`${DOMAIN}/addGroup?group=\$\{group\}&token=\$\{token\}\`);
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                     xhr.onload = () => {
@@ -159,7 +160,7 @@ const getPage = () => {
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = "json";
 
-                    xhr.open("GET", \`${DOMAIN}/deleteStudent?id=\$\{id\}\`);
+                    xhr.open("GET", \`${DOMAIN}/deleteStudent?id=\$\{id\}&token=\$\{token\}\`);
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                     xhr.onload = () => {
@@ -174,6 +175,9 @@ const getPage = () => {
                     };
                     xhr.send();
                 };
+                let trueList;
+                let falseList ;
+                let neitList ;
             </script>
             <body>
             <p style="padding:20px;display: flex;"><a  style="width: 20vw; font-size: 20px; margin-right: 20px;" class="btn btn-success" id="new_group_btn">Добавить группу:</a> <input style="width: 60vw;" type="text" id="new_group" class="form-control"  ></p>
@@ -292,9 +296,9 @@ const getPage = () => {
                                     <a class="btn btn-danger" id="${child}_button_HW_false">Не выполнено</a>
                                     <a class="btn btn-secondary" id="${child}_button_HW_neitral">Вернуть на доработку</a>
                                         <script>
-                                            const trueList = document.getElementById("${child}_button_HW_true").classList;
-                                            const falseList = document.getElementById("${child}_button_HW_false").classList;
-                                            const neitList = document.getElementById("${child}_button_HW_neitral").classList;
+                                             trueList = document.getElementById("${child}_button_HW_true").classList;
+                                             falseList = document.getElementById("${child}_button_HW_false").classList;
+                                             neitList = document.getElementById("${child}_button_HW_neitral").classList;
                
                                             document.getElementById("${child}_button_HW_true").addEventListener("click",()=>{
                                                 if(!trueList.contains("btn-secondary")){
@@ -374,4 +378,4 @@ const getPage = () => {
     return page;
 };
 
-export {getPage};
+export {getPage, DOMAIN};

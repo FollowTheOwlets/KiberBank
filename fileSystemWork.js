@@ -45,17 +45,18 @@ const addUser = (name, login, password, group) => {
         return {state: false, message: "Такой пользователь уже существует"};
     }
     users[login] = user;
-    writeFile(USER_LIST, users);
 
     //Добавление в общий список
     usersInfo[id] = {login, coins: 10, tasks: []};
-    writeFile(USER_INFO, usersInfo);
 
     // Запись в группу
     if (groups[group] === undefined) {
         return {state: false, message: "Такой группы не существует"};
     }
     groups[group] = groups[group] !== undefined ? [...groups[group], id] : [id];
+
+    writeFile(USER_INFO, usersInfo);
+    writeFile(USER_LIST, users);
     writeFile(GROUPS, groups);
 
     return {state: true};
