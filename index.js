@@ -4,17 +4,17 @@ import {
     addCoin,
     addTask,
     addUser,
-    checkUser,
     completeTask,
     getCoinsAndTasks,
     addGroup,
-    deleteStudent
+    deleteStudent, readFile, USER_LIST, deleteGroup
 } from "./fileSystemWork.js";
 import {DOMAIN, getPage} from "./client/getPage.js";
 import {getUserPage} from "./client/getUserPage.js";
 import * as Process from "process";
 import {getLoginPage} from "./client/getLoginPage.js";
-import Ddos  from 'ddos';
+import Ddos from 'ddos';
+import bcrypt from "bcrypt";
 
 const PORT = Process.env.PORT || 3000;
 const app = express();
@@ -43,6 +43,7 @@ if(localStorage.getItem("token"))
 document.getElementById("btn").addEventListener("click",()=>{
     localStorage.setItem("token",document.getElementById("input").value);
     document.getElementById("a").setAttribute("href","${DOMAIN}/edit?token=" + document.getElementById("input").value);
+    localStorage.setItem("token",document.getElementById("input").value);
 })
 </script>`);
     } else {
@@ -83,6 +84,16 @@ app.get("/addGroup", (req, res) => {
     res.send(JSON.stringify(addGroup(req.query.group)));
 })
 
+app.get("/deleteGroup", (req, res) => {
+    if (!TOKENS.includes(req.query.token)) {
+        return;
+    }
+    if (req.query.group === undefined || req.query.group === null) {
+        return;
+    }
+    res.send(JSON.stringify(deleteGroup(req.query.group)));
+})
+
 app.get("/auto", (req, res) => {
     if (req.query.login === undefined || req.query.login === null) {
         return;
@@ -90,7 +101,20 @@ app.get("/auto", (req, res) => {
     if (req.query.password === undefined || req.query.password === null) {
         return;
     }
-    res.send(JSON.stringify(checkUser(req.query.login, req.query.password)));
+
+    const users = readFile(USER_LIST);
+    // Проверка и регистрация
+    if (users[req.query.login] === undefined) {
+        res.send(JSON.stringify({state: false, message: "Такого пользователя не найдено"}));
+    }
+
+    bcrypt.compare(req.query.password, users[req.query.login].password, (err, result) => {
+        if (result) {
+            res.send(JSON.stringify({state: true, id: users[req.query.login].id, name: users[req.query.login].name}));
+        } else {
+            res.send(JSON.stringify({state: false, message: "Неверный пароль"}));
+        }
+    });
 })
 
 app.get("/addTask", (req, res) => {

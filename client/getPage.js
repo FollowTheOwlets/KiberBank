@@ -1,7 +1,7 @@
 import {GROUPS, readFile, USER_INFO, USER_LIST} from "../fileSystemWork.js";
 
-//const DOMAIN = "http://localhost:3000";
-const DOMAIN = "https://kiber-bank-server.herokuapp.com";
+const DOMAIN = "http://localhost:3000";
+//const DOMAIN = "https://kiber-bank-server.herokuapp.com";
 const getPage = () => {
     let page = ``;
     const header = `
@@ -156,6 +156,26 @@ const getPage = () => {
                     };
                     xhr.send();
                 };
+                const requestDeleteGroup = (group) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.responseType = "json";
+
+                    xhr.open("GET", \`${DOMAIN}/deleteGroup?group=\$\{group\}&token=\$\{token\}\`);
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                    xhr.onload = () => {
+                        if (xhr.status !== 200) {
+                            return;
+                        }
+                        const response = xhr.response;
+                        alert(response.state ? "Группа удалена":"Такой группы не найдено");
+                    };
+
+                    xhr.onerror = () => {
+                        alert(\`Ошибка соединения\`);
+                    };
+                    xhr.send();
+                };
                 const requestDeleteStudent = (id) => {
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = "json";
@@ -183,6 +203,10 @@ const getPage = () => {
             <p style="padding:20px;display: flex;"><a  style="width: 20vw; font-size: 20px; margin-right: 20px;" class="btn btn-success" id="new_group_btn">Добавить группу:</a> <input style="width: 60vw;" type="text" id="new_group" class="form-control"  ></p>
             <script>
                 document.getElementById("new_group_btn").addEventListener("click", ()=>{
+                    if(document.getElementById("new_group").value.trim() === ""){
+                        alert("Пустая строка");
+                        return;
+                    }
                     requestAddGroup(document.getElementById("new_group").value);
                 });
             </script>
@@ -255,10 +279,14 @@ const getPage = () => {
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#g_${group}" aria-expanded="true" aria-controls="g_${group}">
                         Работа с группой <strong style="padding: 0 5px;"> ${group}</strong>
                     </button>
+                    <a id="g_${group}_delete_group" class="btn btn-secondary" style="margin: 5px 20px; padding: 2px; font-size: 12px;">Удалить группу</a>
                     <a id="g_${group}_add_task"  data-bs-toggle="modal" data-bs-target="#ModalTask" class="btn btn-secondary" style="margin: 5px 20px; padding: 2px; font-size: 12px;">Добавить задание</a>
                     <script>
                         document.getElementById("g_${group}_add_task").addEventListener("click",()=>{
                             document.getElementById("group").textContent = "${group}";
+                        });
+                         document.getElementById("g_${group}_delete_group").addEventListener("click",()=>{
+                            requestDeleteGroup("${group}");
                         });
                     </script>
                 </h2>
