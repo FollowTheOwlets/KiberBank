@@ -12,7 +12,7 @@ const getUserPage = (id) => {
 <head>
     <meta charset="UTF-8">
     <title>KiberBank</title>
-    <link rel="icon" href="${DOMAIN}/ico">
+    <link rel="icon" href="${DOMAIN}/img/favicon.ico">
 </head>
 <style>
     * {
@@ -274,7 +274,7 @@ const getUserPage = (id) => {
                         <span class="kiber_nice">КиберПриятности</span>
                     </div>
                     <div class="img_wrapper">
-                        <img id="kiber_img" src="${DOMAIN}/nice_orig">
+                        <img id="kiber_img" src="${DOMAIN}/img/nice_orig.png">
                     </div>
                 </div>
             </div>
