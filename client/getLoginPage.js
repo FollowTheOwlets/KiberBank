@@ -7,7 +7,7 @@ const getLoginPage = (page) => {
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="${DOMAIN}/ico">
+    <link rel="icon" href="${DOMAIN}/img/favicon.ico">
     <title>KiberBank</title>
 </head>
 <style>
@@ -54,7 +54,7 @@ document.getElementById("button").addEventListener("click",()=>{
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="${DOMAIN}/ico">
+    <link rel="icon" href="${DOMAIN}/img/favicon.ico">
     <title>KiberBank</title>
 </head>
 <style>
