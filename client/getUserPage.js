@@ -1,12 +1,8 @@
-import {GROUPS, readFile, USER_INFO, USER_LIST} from "../fileSystemWork.js";
-import {DOMAIN} from "./getPage.js";
-import path from "path";
 
-const getUserPage = (id) => {
-    const users = readFile(USER_INFO);
-    const usersList = readFile(USER_LIST);
+const getUserPage = (user, tasks, DOMAIN) => {
 
-    if(users[id] === undefined || users[id] === null){
+
+    if (user === null) {
         return `<script>
                     const ls = localStorage;
                     if(!localStorage.getItem("id")){
@@ -56,11 +52,11 @@ document.getElementById("to_log").addEventListener("click",()=>{
         <div class="body">
             <div class="block">
                 <div class="first_under_block">
-                    <span class="hello"> Привет, ${usersList[users[id].login].name}</span>
+                    <span class="hello"> Привет, ${user.name}</span>
                     <span class="coins_header">Твои кибероны:</span>
                     <div class="coins_count">
                         <span class="coins_count-icon">K</span>
-                        <span class="coins_count-count_num">${users[id].coins}</span>
+                        <span class="coins_count-count_num">${user.coins}</span>
                     </div>
                 </div>
                 <div class="second_under_block">
@@ -94,7 +90,7 @@ document.getElementById("to_log").addEventListener("click",()=>{
                 <span class="tasks_span">Задания:</span>
                 <div id="tasks_container">
                 `
-    for (const task of users[id].tasks) {
+    for (const task of tasks) {
         page += `<div class="card task">
                             <span class="task-date">${task.date[8] + task.date[9] + "." + task.date[5] + task.date[6]}</span>
                             <span class="task-text">${task.text}</span>

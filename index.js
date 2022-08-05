@@ -1,179 +1,121 @@
 import express from 'express';
 import cors from 'cors';
-import {
-    addCoin,
-    addTask,
-    addUser,
-    completeTask,
-    getCoinsAndTasks,
-    addGroup,
-    deleteStudent, readFile, USER_LIST, deleteGroup
-} from "./fileSystemWork.js";
-import {DOMAIN, getPage} from "./client/getPage.js";
 import {getUserPage} from "./client/getUserPage.js";
 import * as Process from "process";
 import {getLoginPage} from "./client/getLoginPage.js";
 import Ddos from 'ddos';
-import bcrypt from "bcrypt";
+import {dbController, TOKENS} from "./db.controller.js"
+import {db} from "./DB/db.js";
+import {header} from "./helloTutor/header.js";
+import {groupBlock} from "./helloTutor/groupBlock.js";
+import {footer} from "./helloTutor/footer.js";
 
 const PORT = Process.env.PORT || 3000;
 const app = express();
 const ddos = new Ddos;
+
+const DOMAIN = "http://localhost:3000";
+//const DOMAIN = "https://kiber-bank-server.herokuapp.com";
+
 app.use(ddos.express)
-
-const TOKENS = ["f8bae0a5-ad36-4c7a-a98f-d2868f1bc6f8", "b9cc3baa-b280-4241-a517-7c903f39255b"];
-
 app.use(cors());
 
-app.get('/', (req, res) => {
+await db.query("create TABLE groups( group_id   SERIAL PRIMARY KEY, group_name character(10)) ON CONFLICT DO NOTHING;");
+await db.query("create TABLE users(user_id  character(40) PRIMARY KEY, login character(30), password character(70), name character(30), group_id smallint, coins smallint, FOREIGN KEY (group_id) REFERENCES groups (group_id)) ON CONFLICT DO NOTHING;");
+await db.query("create TABLE tasks(task_id  SERIAL PRIMARY KEY, date     character(12), text     character(255), group_id smallint, weight   smallint, FOREIGN KEY (group_id) REFERENCES groups (group_id)) ON CONFLICT DO NOTHING;");
+await db.query("create TABLE tasks_state(row     SERIAL PRIMARY KEY, user_id character(40), task_id smallint, state   smallint, FOREIGN KEY (user_id) REFERENCES users (user_id), FOREIGN KEY (task_id) REFERENCES tasks (task_id))ON CONFLICT DO NOTHING;");
+
+app.get("/getUser561204567rtyw7", dbController.getCoinsAndTasks);
+app.get("/reg", dbController.addUser);
+app.get("/auto", dbController.checkUser);
+app.get("/addGroup", dbController.addGroup);
+app.get("/deleteGroup", dbController.deleteGroup);
+app.get("/addTask", dbController.addTask);
+app.get("/completeTask", dbController.completeTask);
+app.get("/deleteStudent", dbController.deleteStudent);
+app.get("/addCoins", dbController.addCoin);
+app.get('/', async (req, res) => {
     if (req.query.id === undefined || req.query.id === null) {
-        res.send(getLoginPage(req.query.page));
+        res.send(getLoginPage(req.query.page, DOMAIN));
     } else {
-        res.send(getUserPage(req.query.id));
+        const id = req.query.id;
+        let rows = await db.query("SELECT * FROM users WHERE user_id = $1", [id]);
+
+        const taskArray = await db.query("SELECT * FROM tasks_state WHERE user_id = $1 ORDER BY task_id DESC", [id]);
+        let answerTaskArray = [];
+
+        for (let task of taskArray.rows) {
+            let rows = await db.query("SELECT * FROM tasks WHERE task_id = $1", [task["task_id"]]);
+            let fullTask = {};
+            fullTask.date = rows.rows[0]["date"].trim();
+            fullTask.text = rows.rows[0]["text"].trim();
+            fullTask.weight = rows.rows[0]["weight"];
+            fullTask["state"] = task["state"];
+            answerTaskArray.push(fullTask);
+        }
+
+        if (rows.rows.length === 0) {
+            res.send(getUserPage(null, answerTaskArray, DOMAIN));
+        } else {
+            res.send(getUserPage(rows.rows[0], answerTaskArray, DOMAIN));
+        }
     }
 })
-
-app.get('/edit', (req, res) => {
+app.get('/edit', async (req, res) => {
     if (!TOKENS.includes(req.query.token)) {
         res.send(`<input id="input" style="width: 20vw;"><button id="btn">Сохранить</button> <a id="a">Ссылка</a>
-<script> 
-document.getElementById("input").value =  localStorage.getItem("token") || "";
-if(localStorage.getItem("token"))
-    document.getElementById("a").setAttribute("href","${DOMAIN}/edit?token=" + localStorage.getItem("token"));
-document.getElementById("btn").addEventListener("click",()=>{
-    localStorage.setItem("token",document.getElementById("input").value);
-    document.getElementById("a").setAttribute("href","${DOMAIN}/edit?token=" + document.getElementById("input").value);
-    localStorage.setItem("token",document.getElementById("input").value);
-})
-</script>`);
+            <script> 
+            document.getElementById("input").value =  localStorage.getItem("token") || "";
+            if(localStorage.getItem("token"))
+                document.getElementById("a").setAttribute("href","${DOMAIN}/edit?token=" + localStorage.getItem("token"));
+            document.getElementById("btn").addEventListener("click",()=>{
+                localStorage.setItem("token",document.getElementById("input").value);
+                document.getElementById("a").setAttribute("href","${DOMAIN}/edit?token=" + document.getElementById("input").value);
+                localStorage.setItem("token",document.getElementById("input").value);
+            })
+            </script>`);
     } else {
-        res.send(getPage());
-    }
-})
+        let page = ``;
+        page += header(DOMAIN);
+        const groups = await db.query("SELECT * from groups");
 
-app.get("/getUser561204567rtyw7", (req, res) => {
-    if (req.query.id === undefined || req.query.id === null) {
-        return;
-    }
-    res.send(JSON.stringify(getCoinsAndTasks(req.query.id)));
-})
+        for (let group of groups.rows) {
+            let groupJson = {};
+            groupJson.name = group["group_name"].trim();
+            groupJson.users = [];
+            const usersDb = await db.query("SELECT * from users WHERE group_id = $1", [group["group_id"]]);
+            for (let user of usersDb.rows) {
+                const id = user["user_id"];
 
-app.get("/reg", (req, res) => {
-    if (req.query.name === undefined || req.query.name === null) {
-        return;
-    }
-    if (req.query.login === undefined || req.query.login === null) {
-        return;
-    }
-    if (req.query.password === undefined || req.query.password === null) {
-        return;
-    }
-    if (req.query.group === undefined || req.query.group === null) {
-        return;
-    }
-    res.send(JSON.stringify(addUser(req.query.name, req.query.login, req.query.password, req.query.group)));
-})
+                const taskArray = await db.query("SELECT * FROM tasks_state WHERE user_id = $1 ORDER BY task_id DESC", [id]);
+                let answerTaskArray = [];
 
-app.get("/addGroup", (req, res) => {
-    if (!TOKENS.includes(req.query.token)) {
-        return;
-    }
-    if (req.query.group === undefined || req.query.group === null) {
-        return;
-    }
-    res.send(JSON.stringify(addGroup(req.query.group)));
-})
+                for (let task of taskArray.rows) {
 
-app.get("/deleteGroup", (req, res) => {
-    if (!TOKENS.includes(req.query.token)) {
-        return;
-    }
-    if (req.query.group === undefined || req.query.group === null) {
-        return;
-    }
-    res.send(JSON.stringify(deleteGroup(req.query.group)));
-})
+                    let rows = await db.query("SELECT * FROM tasks WHERE task_id = $1", [task["task_id"]]);
+                    let fullTask = {};
+                    fullTask.date = rows.rows[0]["date"].trim();
+                    fullTask.text = rows.rows[0]["text"].trim();
+                    fullTask.weight = rows.rows[0]["weight"];
+                    fullTask["state"] = task["state"];
+                    answerTaskArray.push(fullTask);
+                }
 
-app.get("/auto", (req, res) => {
-    if (req.query.login === undefined || req.query.login === null) {
-        return;
-    }
-    if (req.query.password === undefined || req.query.password === null) {
-        return;
-    }
+                let newUser = {
+                    name: user["name"].trim(),
+                    id: user["user_id"].trim(),
+                    login: user["login"].trim(),
+                    coins: user["coins"],
+                    task: answerTaskArray.length === 0 ? null : answerTaskArray[0]
+                }
+                groupJson.users.push(newUser);
+            }
 
-    const users = readFile(USER_LIST);
-    // Проверка и регистрация
-    if (users[req.query.login] === undefined) {
-        res.send(JSON.stringify({state: false, message: "Такого пользователя не найдено"}));
-    }
-
-    bcrypt.compare(req.query.password, users[req.query.login].password, (err, result) => {
-        if (result) {
-            res.send(JSON.stringify({state: true, id: users[req.query.login].id, name: users[req.query.login].name}));
-        } else {
-            res.send(JSON.stringify({state: false, message: "Неверный пароль"}));
+            page += groupBlock(groupJson);
         }
-    });
-})
-
-app.get("/addTask", (req, res) => {
-    if (!TOKENS.includes(req.query.token)) {
-        return;
+        page += footer();
+        res.send(page);
     }
-    if (req.query.date === undefined || req.query.date === null) {
-        return;
-    }
-    if (req.query.text === undefined || req.query.text === null) {
-        return;
-    }
-    if (req.query.group === undefined || req.query.group === null) {
-        return;
-    }
-    if (req.query.weight === undefined || req.query.weight === null) {
-        return;
-    }
-    addTask(req.query.date, req.query.text, req.query.group, req.query.weight);
-    res.send();
-})
-
-app.get("/completeTask", (req, res) => {
-    if (!TOKENS.includes(req.query.token)) {
-        return;
-    }
-    if (req.query.id === undefined || req.query.id === null) {
-        return;
-    }
-    if (req.query.state === undefined || req.query.state === null) {
-        return;
-    }
-    completeTask(req.query.id, req.query.state);
-    res.send();
-})
-
-app.get("/deleteStudent", (req, res) => {
-    if (!TOKENS.includes(req.query.token)) {
-        return;
-    }
-    if (req.query.id === undefined || req.query.id === null) {
-        return;
-    }
-    deleteStudent(req.query.id);
-    res.send();
-})
-
-app.get("/addCoins", (req, res) => {
-    if (!TOKENS.includes(req.query.token)) {
-        return;
-    }
-    if (isNaN(parseInt(req.query.coins))) {
-        return;
-    }
-    if (req.query.id === undefined || req.query.id === null) {
-        return;
-    }
-    addCoin(req.query.coins, req.query.id);
-    res.send();
 })
 
 app.get('/nice_orig', (req, res) => {
@@ -184,7 +126,6 @@ app.get('/ico', (req, res) => {
     res.setHeader('Content-Type', 'image/x-icon');
     res.sendFile(`/app/img/favicon.ico`);
 });
-
 
 app.listen(PORT, () => {
     console.log("Запустились!")

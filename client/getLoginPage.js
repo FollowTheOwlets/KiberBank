@@ -1,7 +1,5 @@
-import {DOMAIN} from "./getPage.js";
 
-
-const getLoginPage = (page) => {
+const getLoginPage = (page,DOMAIN) => {
 
     const regPage = `<!DOCTYPE HTML >
 <html lang="ru">
