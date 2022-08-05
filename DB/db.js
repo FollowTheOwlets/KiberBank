@@ -1,4 +1,4 @@
-import {Client} from "pg";
+import pg from "pg";
 import * as Process from "process";
 
 /*const db = new pg.Pool({
@@ -9,7 +9,7 @@ import * as Process from "process";
     database:Process.env.DB_USERNAME || "kiber-one"
 });*/
 
-const db = new Client({
+const db = new pg.Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
         rejectUnauthorized: false
